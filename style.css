@@ -1,0 +1,1329 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+/* ================= RESET ================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  text-decoration:none;
+  border:none;
+  outline:none;
+  font-family:"Poppins",sans-serif;
+}
+
+/* ================= VARIABLES ================= */
+:root{
+  --bg-color:#081b29;
+  --main-color:#00abf0;
+  --text-color: #1f2933;
+  --second-text-color: #374151;
+  --white-color:#fff;
+  --cover-color:linear-gradient(45deg,#00abf0,#006e9a);
+  --pages-color:linear-gradient(90deg,#fff,#ddd);
+  --border:.12rem solid #00abf0;
+  --box-shadow:0 0 .6rem rgba(0,0,0,.2);
+}
+
+/* ================= BODY ================= */
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:var(--bg-color);
+  color:var(--text-color);
+  overflow:hidden;
+  font-size:14px;
+}
+
+/* ================= WRAPPER ================= */
+.wrapper{
+  position:relative;
+  width:min(90vw,66rem);
+  height:min(90vh,45rem);
+  padding:1.6rem;
+  perspective:250rem;
+  animation:show-animate 2s forwards;
+}
+
+@keyframes show-animate{
+  0%,30%{opacity:0;transform:rotate(-20deg);}
+  100%{opacity:1;transform:rotate(0deg);}
+}
+
+/* ================= COVER ================= */
+.cover{
+  position:absolute;
+  top:0;
+  left:0;
+  width:50%;
+  height:100%;
+  background:var(--cover-color);
+  box-shadow:var(--box-shadow);
+  border-radius:.6rem 0 0 .6rem;
+  transform-origin:right;
+}
+
+.cover.cover-right{
+  z-index:100;
+  transition:transform 1s cubic-bezier(.645,.045,.355,1);
+}
+.cover.cover-right.turn{transform:rotateY(180deg);}
+.cover.cover-left{z-index:-1;}
+
+/* ================= BOOK ================= */
+.book{
+  position:relative;
+  width:100%;
+  height:100%;
+  perspective:250rem;
+}
+/* ================= PAPER STACK DEPTH ================= */
+
+
+/* ================= BOOK PAGES ================= */
+.book-page{
+  position:absolute;
+  width:50%;
+  height:100%;
+  background:var(--pages-color);
+  box-shadow:0 0 .6rem rgba(0,0,0,.1);
+}
+
+.book-page.page-left{
+  box-shadow:inset -18px 0 25px rgba(0, 0, 0, 0.08),inset -3px 0 6px rgba(0, 0, 0, 0.06);
+  background: linear-gradient(90deg,#e6e6e6 0%,#f4f4f4 65%,#ffffff 100%
+  );
+}
+
+.book-page.page-right{
+  right:0;
+  transform-style:preserve-3d;
+  transform-origin:left;
+  transition:transform 1s cubic-bezier(.645,.045,.355,1);
+  box-shadow:inset 18px 0 25px rgba(0, 0, 0, 0.08),inset 3px 0 6px rgba(0, 0, 0, 0.06);
+  background: linear-gradient(270deg, #eaeaea 0%, #f7f7f7 35%,#ffffff 100%
+  );
+}
+
+.book-page.page-right.turn{
+  transform:rotateY(-180deg);
+}
+/* ================= BOOK CENTER GUTTER SHADOW ================= */
+
+/* Left page inner shadow */
+.book-page.page-left::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 14px;
+  height: 100%;
+  background: linear-gradient(to left,rgba(0, 0, 0, 0.12),transparent);
+  pointer-events: none;
+}
+
+/* Right page inner shadow */
+.book-page.page-right::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 100%;
+  background: linear-gradient(to right,rgba(0, 0, 0, 0.12),transparent);
+  pointer-events: none;
+}
+
+/* ================= PAGE CONTENT ================= */
+.page-front,
+.page-back{
+  position:absolute;
+  inset:0;
+  padding:1.2rem 1.6rem 4.2rem;
+  background:transparent;
+  overflow:hidden;
+}
+
+.page-front{transform:rotateY(0deg) translateZ(1px);}
+.page-back{transform:rotateY(180deg) translateZ(1px);}
+
+/* ================= PAPER TEXTURE NOISE ================= */
+
+/* ================= PAPER TEXTURE (SAFE VERSION) ================= */
+
+/* Texture layer for BOTH front & back surfaces */
+.page-front::before,
+.page-back::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml;utf8,\<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'>\<filter id='n'>\<feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='1'/>\</filter>\<rect width='140' height='140' filter='url(%23n)' opacity='0.04'/>\</svg>");
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+/* ================= PAGE EDGE HIGHLIGHT ================= */
+
+.book-page.page-right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* Highlight visible while page is turning */
+.book-page.page-right.turn::after {
+  opacity: 1;
+}
+
+
+
+
+/* ================= TITLES ================= */
+.title{
+  text-align:center;
+  margin-bottom:.8rem;
+  font-size:1.35rem;
+  padding: 0 1.6rem;
+}
+
+/* ================= PROFILE ================= */
+.profile-page{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+.profile-page img{
+  width:130px;
+  border-radius:50%;
+  border:.22rem solid var(--main-color);
+  margin-bottom:.6rem;
+  transition: transform .5s ease, box-shadow .5s ease;
+  will-change: transform;
+}
+.profile-page img:hover{
+  transform: scale(1.08);
+  box-shadow: 0 0 1.2rem rgba(0, 171, 240, 0.45);
+}
+
+.profile-page h1{
+  font-size:2.1rem;
+  margin-top: 0.3rem;
+}
+.profile-page h3{
+  font-size:1.2rem;
+  color:var(--main-color);
+  margin-bottom: 0.4rem;
+}
+.profile-page p{
+  font-size:.88rem;
+  line-height:1.4;
+  text-align:justify;
+  max-width: 92%;
+  margin: 0.4rem auto 0;
+  margin-bottom: 1.2rem;
+}
+.profile-page .btn-box {
+  margin-top: 0.4rem;
+}
+
+.profile-page .social-media{
+  margin:.5rem 0 .7rem;
+  margin-bottom: 1.1rem;
+}
+.profile-page .social-media a{
+  width:2.2rem;
+  height:2.2rem;
+  border:var(--border);
+  border-radius:50%;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--main-color);
+  font-size:1.1rem;
+  margin:0 .15rem;
+  transition:.5s;
+}
+.profile-page .social-media a:hover{
+  background:var(--main-color);
+  color:var(--white-color);
+}
+/* =======================================================
+   PROFILE IMAGE – USE SAME EFFECT AS PROJECT IMAGES
+   ======================================================= */
+
+/* Remove any previous special effects */
+.profile-pic-3d::before,
+.profile-pic-3d::after {
+  content: none;
+}
+
+/* Profile image container behaves like project img box */
+.profile-pic-3d {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* Profile image */
+.profile-pic-3d img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+
+  /* SAME transition as project images */
+  transition: transform 0.4s ease;
+}
+
+/* SAME hover zoom as project page */
+.profile-pic-3d:hover img {
+  transform: scale(1.08);
+}
+/* =======================================================
+   PROFILE IMAGE – KEEP BLUE BORDER VISIBLE ON HOVER
+   ======================================================= */
+
+/* Container holds the border */
+.profile-pic-3d {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  border: 0.22rem solid var(--main-color); /* BLUE BORDER HERE */
+}
+
+/* Image inside */
+.profile-pic-3d img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+
+  transition: transform 0.4s ease;
+}
+
+/* Hover zoom – image only */
+.profile-pic-3d:hover img {
+  transform: scale(1.08);
+}
+
+/* =======================================================
+
+
+/* ================= BUTTONS ================= */
+.btn{
+  width:8rem;
+  height:2.5rem;
+  border:var(--border);
+  background:var(--main-color);
+  color:var(--white-color);
+  font-size:.88rem;
+  font-weight:500;
+  border-radius:.3rem;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  transition:.5s;
+}
+.btn:hover{
+  background:transparent;
+  color:var(--main-color);
+}
+
+.btn-box .btn:nth-child(2){
+  background:transparent;
+  color:var(--main-color);
+}
+.btn-box .btn:nth-child(2):hover{
+  background:var(--main-color);
+  color:var(--white-color);
+}
+
+/* ================= NAVIGATION ================= */
+.number-page{
+  position:absolute;
+  bottom:1rem;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:.82rem;
+}
+
+.nextprev-btn{
+  position:absolute;
+  bottom:.9rem;
+  font-size:1.7rem;
+  color:var(--second-text-color);
+  cursor:pointer;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  transition:.5s;
+}
+.nextprev-btn:hover{color:var(--main-color);}
+.nextprev-btn.back{left:1.4rem;}
+.nextprev-btn:not(.back){right:1.4rem;}
+
+/* ================= WORK & EDUCATION ================= */
+.workeduc-box{
+  border-left:var(--border);
+  padding-left:1.4rem;
+}
+
+.workeduc-content{
+  position:relative;
+  margin-bottom:1.1rem;
+}
+
+.workeduc-content::before{
+  content:'';
+  position:absolute;
+  left:-1.55rem;
+  top:.2rem;
+  width:.9rem;
+  height:.9rem;
+  background:var(--main-color);
+  border-radius:50%;
+}
+
+.workeduc-content .year{
+  font-size:.85rem;
+  color:var(--main-color);
+}
+.workeduc-content .year i{margin-right:.3rem;}
+.workeduc-content h3{font-size:1.05rem;}
+.workeduc-content p{font-size:.85rem;line-height:1.4;}
+
+/* ================= ACHIEVEMENTS ================= */
+.achievements-box{
+  display:flex;
+  flex-wrap:wrap;
+  gap:1.2rem;
+}
+
+.achievements-content{
+  flex:1 1 9rem;
+  border:var(--border);
+  border-radius:.5rem;
+  padding:.7rem .6rem 1rem;
+  text-align:center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+.achievements-content:hover{
+  box-shadow:var(--box-shadow);
+}
+.achievements-content i{
+  font-size:2.1rem;
+  color:var(--main-color);
+}
+.achievements-content h3{font-size:.98rem;}
+.achievements-content p{font-size:.8rem;margin:.2rem 0 .6rem;}
+.read-more-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.6s ease, opacity 0.4s ease;
+}
+.achievements-content.active .read-more-content {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 0.5rem;
+}
+.achievements-content.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.read-more-btn {
+  margin-top: 0.6rem;
+  cursor: pointer;
+}
+
+/* ================= SKILLS SECTION ================= */
+
+.skills-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem;
+}
+
+/* Skill category (Front-End, Back-End, etc.) */
+.skills-content h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Container for skill items */
+.skills-content .content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: flex-start;
+}
+
+/* Individual skill item */
+.skills-content .content span {
+  width: 4.8rem;
+  min-height: 3.0rem;
+  border: var(--border); 
+  border-radius: 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect */
+.skills-content .content span:hover {
+  box-shadow: var(--box-shadow);
+  transform: translateY(-3px);
+}
+
+/* Skill ICON (HTML, CSS, JS, etc.) */
+.skills-content .content span i {
+  font-size: 2.2rem;
+  color: var(--main-color);
+  margin-bottom: 0.25rem;
+}
+
+/* ================= STAR RATING ================= */
+
+/* ===== SKILL STAR HOVER BEHAVIOR ===== */
+/* ===== SKILL NAME MOVE + ZOOM (FINAL UX) ===== */
+
+.skills-content .content span.skill-item {
+  position: relative;
+  overflow: hidden;
+  
+}
+
+
+/* Skill name */
+.skills-content .content span.skill-item .skill-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  transform-origin: center;
+}
+
+/* On hover: move up + slight zoom out */
+.skills-content .content span.skill-item:hover .skill-name {
+  transform: translateY(-4px) scale(0.92);
+  opacity: 0.85;
+}
+
+/* Keep icon stable */
+.skills-content .content span.skill-item i {
+  color: var(--main-color);
+  transition: transform 0.25s ease;
+  padding-top: 10px;
+}
+
+/* Optional subtle icon lift */
+.skills-content .content span.skill-item:hover i {
+  transform: translateY(-2px);
+}
+
+/* ===== STAR POP-UP (UNCHANGED, CLEAN) ===== */
+
+.skills-content .content span .star-rating {
+  position: absolute;
+  bottom: 0.35rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.85);
+
+  display: flex;
+  gap: 0.18rem;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Show stars on hover */
+.skills-content .content span.skill-item:hover .star-rating {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* Stars only */
+.skills-content .content span .star-rating i {
+  font-size: 0.6rem;
+  line-height: 1;
+  color: #c7c7c7;
+  transform: scale(0);
+}
+
+/* Filled stars */
+.skills-content .content span .star-rating i.filled {
+  color: var(--main-color);
+}
+
+/* Pop animation */
+.skills-content .content span.skill-item:hover .star-rating i {
+  animation: star-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Stagger */
+.skills-content .content span.skill-item:hover .star-rating i:nth-child(1) { animation-delay: 0.02s; }
+.skills-content .content span.skill-item:hover .star-rating i:nth-child(2) { animation-delay: 0.05s; }
+.skills-content .content span.skill-item:hover .star-rating i:nth-child(3) { animation-delay: 0.08s; }
+.skills-content .content span.skill-item:hover .star-rating i:nth-child(4) { animation-delay: 0.11s; }
+.skills-content .content span.skill-item:hover .star-rating i:nth-child(5) { animation-delay: 0.14s; }
+
+@keyframes star-pop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+/* ===== SKILL NAME CLEAN TEXT FIX ===== */
+
+/* ===== SKILL NAME POSITION FIX ===== */
+
+.skills-content .content span.skill-item .skill-name {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+  display: inline-block;   /* IMPORTANT: not block */
+  line-height: 1.1;
+  text-align: center;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+}
+
+
+
+/* ================= PROJECT ================= */
+
+/* ================= PROJECT SWITCH ANIMATION ================= */
+
+.project-fade {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.project-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.portfolio-box .img-box{
+  width:100%;
+  height:11rem;
+  border:var(--border);
+  border-radius:.5rem;
+  overflow:hidden;
+}
+.portfolio-box .img-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.5s;
+}
+.portfolio-box .img-box:hover img{
+  transform:scale(1.08);
+}
+
+.portfolio-box .info-box{
+  margin:.8rem 0 1.2rem;
+}
+.portfolio-box .info-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.portfolio-box .info-title h3{font-size:1.1rem;}
+.portfolio-box .info-title a{
+  color:var(--main-color);
+  display:flex;
+  align-items:center;
+}
+.portfolio-box .info-title a i{margin-left:.3rem;}
+.portfolio-box .info-box p{
+  font-size:.8rem;
+  line-height:1.35;
+}
+.portfolio-box .btn-box{
+  display:flex;
+  justify-content:center;
+  gap:.9rem;
+}
+
+/* ================= PROJECT DETAILS EXPAND ================= */
+
+.project-container {
+  position: relative;
+  height: 100%;
+}
+
+/* Fade image */
+.project-hide-image {
+  opacity: 0;
+  transform: scale(0.98);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* DETAILS PANEL */
+.project-details {
+  position: absolute;
+  inset: 0;
+  padding: 1.6rem;
+  padding-bottom: 4.5rem;
+  overflow-y: auto;
+  background: transparent;
+  z-index: 2;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* Active state */
+.project-details.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Typography */
+.project-details h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.project-details h4 {
+  margin-top: 1rem;
+  color: var(--main-color);
+}
+
+.project-details p {
+  color: var(--text-color);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+
+
+.details-btn {
+  position: relative;
+  z-index: 5;
+}
+
+/* ================= PROJECT BUTTON VISIBILITY ================= */
+
+.hide-btn {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+/* ================= PROJECT NEXT TRANSITION ================= */
+
+.project-transition-out {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.project-transition-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+/* ================= PROJECT FIXED ACTION BUTTONS ================= */
+
+.project-container {
+  position: relative;
+  height: 100%;
+}
+
+/* Button bar fixed inside project page */
+.project-actions {
+  position: absolute;
+  bottom: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+
+  width: 100%;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+/* Keep buttons consistent size */
+.project-actions .btn {
+  min-width: 9.5rem;
+}
+
+
+
+/* ================= CONTACT ================= */
+.contact-box{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.7rem;
+}
+.contact-box .field{
+  width:100%;
+  background:transparent;
+  border:var(--border);
+  border-radius:.3rem;
+  padding:.55rem;
+  font-size:.83rem;
+  color:var(--text-color);
+}
+.contact-box .field::placeholder{
+  color:var(--text-color);
+}
+.contact-box textarea{
+  grid-column:span 2;
+  height:7.5rem;
+  resize:none;
+}
+.contact-box .btn{
+  grid-column:span 2;
+  justify-self:center;
+  cursor:pointer;
+}
+/* ================= CONTACT PAGE – FULL PAGE SCALE ================= */
+
+/* Target ONLY contact page */
+.page-back .contact-box {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Form container */
+.page-back form.contact-box {
+  width: 100%;
+  max-width: 520px;   /* controls overall form width */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 0.55rem;     /* reduce vertical gaps */
+  column-gap: 0.8rem; 
+}
+
+/* Input & textarea */
+.page-back .contact-box .field {
+  height: 2.7rem;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  border-radius: 0.45rem;
+}
+
+/* Textarea bigger */
+.page-back .contact-box textarea {
+  grid-column: span 2;
+  height: 13.5rem;        /* BIGGER like your reference */
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-top: 0.2rem;
+}
+
+/* Button bigger and centered */
+.page-back .contact-box .btn {
+  grid-column: span 2;
+  height: 3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+/* =======================================================
+   CONTACT PAGE – STABILIZE MESSAGE BOX (SAFE FIX)
+   ======================================================= */
+
+/* Force textarea to always behave like a message box */
+.page-back form.contact-box textarea {
+  grid-column: 1 / -1;   /* full width in grid */
+  min-height: 14rem;     /* REAL message box size */
+  height: auto;          /* prevent collapse */
+  resize: none;
+}
+
+/* Reduce excessive gap ONLY inside contact form */
+.page-back form.contact-box {
+  row-gap: 0.6rem;       /* tighter vertical spacing */
+}
+
+
+/* ================= MOBILE CONTACT – FULL WIDTH ================= */
+@media (max-width: 768px) {
+
+  .page-back form.contact-box {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .page-back .contact-box textarea {
+    grid-column: span 1;
+    height: 9.5rem;
+  }
+
+  .page-back .contact-box .btn {
+    width: 100%;
+  }
+}
+
+
+/* ================= BACK PROFILE ================= */
+.back-profile{
+  position:absolute;
+  bottom:1.2rem;
+  right:2rem;
+  width:1.9rem;
+  height:1.9rem;
+  border:var(--border);
+  border-radius:.3rem;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--main-color);
+  transition:.5s;
+}
+.back-profile:hover{
+  background:var(--main-color);
+  color:var(--white-color);
+}
+.back-profile p{
+  position:absolute;
+  top:0;
+  left:50%;
+  color: var(--main-color);
+  transform:translateX(-50%) scale(.5);
+  font-size:.82rem;
+  opacity:0;
+  transition:.5s;
+}
+.back-profile:hover p{
+  top:-1.5rem;
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+  color: var(--main-color);
+}
+
+
+/* ================= MOBILE RESPONSIVE (FINAL – SINGLE BLOCK) ================= */
+@media (max-width: 768px) {
+
+  /* ===== Base ===== */
+  body {
+    overflow-y: auto;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ===== Wrapper & Book ===== */
+  .wrapper {
+    height: auto;
+    padding: 1rem;
+    perspective: none;
+  }
+
+  .book {
+    height: auto;
+    perspective: none;
+  }
+
+  .cover {
+    display: none;
+  }
+
+  /* ===== Pages stacked ===== */
+  .book-page {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1.6rem;
+    box-shadow: none;
+  }
+
+  .book-page.page-left {
+    box-shadow: none;
+  }
+
+  .book-page.page-right {
+    transform: none !important;
+  }
+
+  .page-front,
+  .page-back {
+    position: static;
+    transform: none !important;
+    height: auto;
+    overflow: visible;
+    padding: 1.5rem 1.2rem;
+  }
+
+  /* ===== Disable book navigation ===== */
+  .nextprev-btn,
+  .number-page,
+  .back-profile {
+    display: none;
+  }
+
+  /* ===== Titles ===== */
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ===== Profile ===== */
+  .profile-page img {
+    width: 110px;
+  }
+
+  .profile-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .profile-page h3 {
+    font-size: 1.05rem;
+  }
+
+  .profile-page p {
+    font-size: 0.9rem;
+  }
+
+  /* ===== Buttons (thumb friendly) ===== */
+  .btn {
+    width: 100%;
+    max-width: 260px;
+    height: 2.8rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 0.6rem;
+    margin: 0.5rem 0;
+  }
+
+  .btn-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ===== Achievements ===== */
+  .achievements-box {
+    flex-direction: column;
+  }
+
+  .achievements-content {
+    width: 100%;
+    flex: none;
+  }
+
+  /* ===== Skills ===== */
+
+  /* ================= MOBILE – SKILLS PAGE ONLY ================= */
+
+.skills-box {
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .profile-page p {
+    margin-bottom: 1.4rem;
+  }
+
+  /* Each skill category */
+  .skills-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .skills-content h3 {
+    text-align: center;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Skill items container */
+  .skills-content .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  /* Individual skill box */
+  .skills-content .content span.skill-item {
+    width: 5.4rem;
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  /* Icon size */
+ .skills-content .content span.skill-item i {
+    font-size: 1rem;   /* reduced from 2.4rem */
+    margin-bottom: 0.15rem;
+  }
+
+  /* Skill name */
+  .skills-content .content span.skill-item .skill-name {
+    font-size: 0.76rem;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 0.1rem;
+  }
+
+  /* Star rating – keep animation & hover */
+  .skills-content .content span .star-rating i {
+    font-size: 0.6rem;
+  }
+   .skills-content .content span .star-rating {
+    bottom: 0.25rem;     
+  /* pull stars upward */
+  }
+
+
+
+  /* ===== Projects ===== */
+  .portfolio-box .img-box {
+    height: auto;
+  }
+
+  .portfolio-box .img-box img {
+    object-fit: contain;
+  }
+
+  .portfolio-box .btn-box {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ===== Contact ===== */
+  .contact-box {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-box .field {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .contact-box textarea {
+    height: 8rem;
+  }
+
+  .contact-box .btn {
+    width: 100%;
+  }
+}
+
+/* =======================================================
+   MOBILE FIX – MY PROJECTS PAGE ONLY
+   (Does NOT affect laptop / desktop)
+   ======================================================= */
+@media (max-width: 768px) {
+
+  /* Ensure project page can scroll */
+  .page-front .portfolio-box {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    padding-bottom: 6.5rem; /* space for action buttons */
+  }
+
+  /* Project image – prevent overflow */
+  .page-front .portfolio-box .img-box {
+    height: 180px;
+  }
+
+  .page-front .portfolio-box .img-box img {
+    object-fit: cover;
+  }
+
+  /* Project info spacing */
+  .page-front .portfolio-box .info-box {
+    margin: 1rem 0 1.4rem;
+  }
+
+  .page-front .portfolio-box .info-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+
+  /* DETAILS PANEL – mobile scroll safe */
+  .page-front .project-details {
+    position: absolute;
+    inset: 0;
+    padding: 1.4rem 1.2rem 7rem; /* bottom space for buttons */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ACTION BUTTONS – fixed & thumb friendly */
+  .page-front .project-actions {
+    position: sticky;
+    bottom: 0.6rem;
+    left: 0;
+    transform: none;
+
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+
+    background: linear-gradient(
+      to top,
+      rgba(255,255,255,0.96),
+      rgba(255,255,255,0.75),
+      transparent
+    );
+
+    z-index: 15;
+  }
+
+  .page-front .project-actions .btn {
+    width: 100%;
+    height: 3rem;
+    font-size: 1rem;
+    border-radius: 0.6rem;
+  }
+
+}
+/* =======================================================
+   MOBILE FIX – CONTACT PAGE ONLY
+   (Does NOT affect laptop / desktop)
+   ======================================================= */
+@media (max-width: 768px) {
+
+  /* Contact page container */
+  .page-back .contact-box {
+    width: 100%;
+    height: auto;
+    padding: 1.4rem 1.2rem;
+    display: block;
+  }
+
+  /* Make form single column */
+  .page-back form.contact-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  /* Inputs & textarea – bigger & touch-friendly */
+  .page-back .contact-box .field {
+    width: 100%;
+    height: 3rem;
+    font-size: 1rem;
+    padding: 0.7rem 0.9rem;
+  }
+
+  /* Textarea height */
+  .page-back .contact-box textarea {
+    height: 8.5rem;
+    resize: none;
+  }
+
+  /* Submit button */
+  .page-back .contact-box .btn {
+    width: 100%;
+    height: 3.2rem;
+    font-size: 1.05rem;
+    margin-top: 0.6rem;
+    border-radius: 0.6rem;
+  }
+
+}
+/* =======================================================
+   PROFILE IMAGE – MOBILE BORDER FIX
+   ======================================================= */
+@media (max-width: 768px) {
+
+  /* Ensure border stays clean and visible */
+  .profile-pic-3d {
+    border: 0.24rem solid var(--main-color); /* slightly clearer on mobile */
+  }
+
+  /* Disable hover zoom on touch devices */
+  .profile-pic-3d img {
+    transform: none !important;
+  }
+
+}
+/* =======================================================
+   PROFILE IMAGE – MOBILE BORDER DEFINITIVE FIX
+   ======================================================= */
+@media (max-width: 768px) {
+
+  /* Stop mobile border clipping */
+  .profile-pic-3d {
+    border: none;              /* disable normal border */
+    overflow: visible;         /* prevent clipping */
+    box-shadow: 
+      0 0 0 3px var(--main-color); /* DRAW BORDER SAFELY */
+  }
+
+  /* Ensure image stays circular */
+  .profile-pic-3d img {
+    border-radius: 50%;
+    transform: none !important;
+  }
+
+}
+/* =======================================================
+   PROFILE IMAGE – REMOVE BORDER ON MOBILE
+   ======================================================= */
+@media (max-width: 768px) {
+
+  .profile-pic-3d {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+}
