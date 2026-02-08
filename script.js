@@ -197,7 +197,23 @@ const projects = [
       work: "Designed a purely mechanical sun-tracking mechanism using passive alignment principles."
     }
   }
-];
+  ,
+{
+  title: "IPL Auction Page",
+  image: "images/ipl-auction.png",
+  desc: "A web-based IPL auction system where teams bid for players with real-time price updates and team budgets.",
+  tech: "Tech Used: HTML, CSS, JavaScript",
+  hasLive: true,
+  liveUrl: "https://cce-auction.vercel.app",
+
+  details: {
+    problem: "Traditional mock IPL auctions are difficult to manage manually and lack real-time validation of bids and team constraints.",
+    work: "Designed and developed an interactive IPL auction page with team-wise bidding, dynamic bid increments, player pools, sold/unsold status, and automatic budget tracking using pure JavaScript."
+  }
+}
+]
+
+;
 
 /* =========================================================
    PROJECT LOGIC
@@ -236,7 +252,14 @@ if (nextProjectBtn) {
       title.textContent = p.title;
       desc.textContent = p.desc;
       tech.textContent = p.tech;
-      live.style.display = p.hasLive ? "flex" : "none";
+      if (p.hasLive && p.liveUrl) {
+        live.style.display = "flex";
+        live.href = p.liveUrl;
+        live.target = "_blank";
+      } else {
+        live.style.display = "none";
+      }
+
 
       [img, title, desc, tech].forEach(el =>
         el.classList.remove("project-transition-out")
